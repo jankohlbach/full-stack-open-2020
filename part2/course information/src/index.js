@@ -1,29 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = (props) => (
-  <h1>{props.course}</h1>
-);
-
-const Part = (props) => (
-  <p>{props.name} {props.exercises}</p>
-);
-
-const Content = (props) => {
-  return props.parts.map((part, i) => (<Part key={i} name={part.name} exercises={part.exercises} />));
-};
-
-const Total = (props) => (
-  <p><b>total of {props.parts.reduce((accumulator, currentValue) => accumulator + currentValue.exercises, 0)} exercises</b></p>
-);
-
-const Course = ({course}) => (
-  <>
-    <Header course={course.name} />
-    <Content parts={course.parts} />
-    <Total parts={course.parts} />
-  </>
-);
+import Course from './components/Course';
 
 const App = () => {
   const courses = [
