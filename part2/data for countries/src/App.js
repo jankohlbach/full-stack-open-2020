@@ -19,10 +19,14 @@ function App() {
     setSearch(e.target.value);
   }
 
+  const handleShowClick = (country) => {
+    setSearch(country);
+  };
+
   return (
     <>
       <Search search={search} handleSearchChange={handleSearchChange} />
-      <Results search={search} countries={countries} />
+      <Results search={search} countries={countries} handleShowClick={handleShowClick} />
     </>
   );
 }

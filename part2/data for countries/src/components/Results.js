@@ -3,11 +3,17 @@ import React from 'react';
 const Results = (props) => {
   const countriesToShow = props.countries.filter((country) => country.name.toLowerCase().indexOf(props.search.toLowerCase()) !== -1);
 
+  const handleShowClick = (e) => {
+    props.handleShowClick(e.target.dataset.country);
+  };
+
   const getResults = () => {
     if(countriesToShow.length > 10 || countriesToShow.length === 0) {
       return (<div>Too many matches, specify another filter</div>);
     } else if(countriesToShow.length > 1) {
-      return (countriesToShow.map((country) => <div key={country.alpha3Code}>{country.name}</div>));
+      return (countriesToShow.map((country) => (
+        <div key={country.alpha3Code}>{country.name}<button data-country={country.name} onClick={handleShowClick}>show</button></div>
+      )));
     } else {
       return (
         <>
