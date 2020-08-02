@@ -5,7 +5,7 @@ import Person from './Person';
 const Persons = (props) => (
   props.persons.map((person) => {
     if(person.name.toLowerCase().indexOf(props.filter.toLowerCase()) !== -1)
-      return <Person key={person.name} person={person} />
+      return <Person key={person.name} person={person} handleDelete={props.handleDelete} />
   })
 );
 

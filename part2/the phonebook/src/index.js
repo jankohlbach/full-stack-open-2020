@@ -41,17 +41,30 @@ const App = () => {
       const newPerson = {
         name: newName,
         number: newNumber,
+        id: persons[persons.length - 1].id + 1,
       };
-
-      setPersons(persons.concat(newPerson));
 
       personService
         .create(newPerson)
         .then((response) => console.log(response))
         .catch((error) => alert('Error'));
 
+      setPersons(persons.concat(newPerson));
+
       setNewName('');
       setNewNumber('');
+    }
+  };
+
+  const handleDelete = (e) => {
+    const personToDelete = persons.filter((person) => person.id == e.target.dataset.id)[0];
+
+    if(window.confirm(`Delete ${personToDelete.name} ?`)) {
+      personService
+        .remove(personToDelete.id)
+        .catch((error) => alert('Error'));
+
+      setPersons(persons.filter((person) => person.id != personToDelete.id));
     }
   };
 
@@ -62,7 +75,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm handleSubmit={handleSubmit} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} handleDelete={handleDelete} />
     </div>
   );
 };
