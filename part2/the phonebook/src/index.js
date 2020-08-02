@@ -12,7 +12,7 @@ import personService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [notification, setNotification] = useState([]);
+  const [notification, setNotification] = useState({});
   const [filter, setFilter] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
@@ -21,7 +21,16 @@ const App = () => {
     personService
       .getAll()
       .then((response) => setPersons(response))
-      .catch((error) => alert('Error'));
+      .catch((error) => {
+        setNotification({
+          message: 'Error while fetching phonebook',
+          type: 'error',
+        });
+        setTimeout(() => {
+          setNotification(null);
+        }, 5000);
+        console.error(error);
+      });
   }, []);
 
   const handleFilterChange = (e) => {
@@ -55,12 +64,24 @@ const App = () => {
             setNewName('');
             setNewNumber('');
 
-            setNotification(`Updated ${person.name}`);
+            setNotification({
+              message: `Updated ${person.name}`,
+              type: 'success',
+            });
             setTimeout(() => {
-              setNotification(null);
+              setNotification({});
             }, 3000);
           })
-          .catch((error) => alert('Error'));
+          .catch((error) => {
+            setNotification({
+              message: 'Error while updating number',
+              type: 'error',
+            });
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
+            console.error(error);
+          });
       }
     } else {
       const newPerson = {
@@ -75,12 +96,24 @@ const App = () => {
           setNewName('');
           setNewNumber('');
 
-          setNotification(`Added ${response.name}`);
+          setNotification({
+            message: `Added ${response.name}`,
+            type: 'success',
+          });
           setTimeout(() => {
             setNotification(null);
           }, 3000);
         })
-        .catch((error) => alert('Error'));
+        .catch((error) => {
+          setNotification({
+            message: 'Error while creating person',
+            type: 'error',
+          });
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
+          console.error(error);
+        });
     }
   };
 
@@ -93,14 +126,23 @@ const App = () => {
         .then((response) => {
           setPersons(persons.filter((person) => person.id !== personToDelete.id));
         })
-        .catch((error) => alert('Error'));
+        .catch((error) => {
+          setNotification({
+            message: 'Error while deleting person',
+            type: 'error',
+          });
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
+          console.error(error);
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification notification={notification} />
       <Filter value={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm handleSubmit={handleSubmit} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
