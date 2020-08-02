@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+
+import personService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,9 +14,10 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
 
   useEffect(function getPersons() {
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => setPersons(response.data));
+    personService
+      .getAll()
+      .then((response) => setPersons(response))
+      .catch((error) => alert('Error'));
   }, []);
 
   const handleFilterChange = (e) => {
@@ -43,8 +45,8 @@ const App = () => {
 
       setPersons(persons.concat(newPerson));
 
-      axios
-        .post('http://localhost:3001/persons', newPerson)
+      personService
+        .create(newPerson)
         .then((response) => console.log(response))
         .catch((error) => alert('Error'));
 
