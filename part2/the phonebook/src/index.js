@@ -118,7 +118,7 @@ const App = () => {
   };
 
   const handleDelete = (e) => {
-    const personToDelete = persons.find((person) => person.id === parseInt(e.target.dataset.id, 10));
+    const personToDelete = persons.find((person) => person.id === e.target.dataset.id);
 
     if(window.confirm(`Delete ${personToDelete.name} ?`)) {
       personService
