@@ -74,7 +74,7 @@ const App = () => {
           })
           .catch((error) => {
             setNotification({
-              message: 'Error while updating number',
+              message: error.response.data.error,
               type: 'error',
             });
             setTimeout(() => {
@@ -106,7 +106,7 @@ const App = () => {
         })
         .catch((error) => {
           setNotification({
-            message: 'Error while creating person',
+            message: error.response.data.error,
             type: 'error',
           });
           setTimeout(() => {
