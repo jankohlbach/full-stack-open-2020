@@ -4,7 +4,7 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
@@ -24,6 +24,8 @@ const App = () => {
 
     if(loggedInUser) {
       const user = JSON.parse(loggedInUser);
+      blogService.setToken(user.token);
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
       setUser(user);
     }
   }, []);
@@ -40,8 +42,8 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch(e) {
-      setErrorMessage(e.message);
-      setTimeout(() => setErrorMessage(null), 5000);
+      setNotification(e.message);
+      setTimeout(() => setNotification(null), 5000);
     }
   };
 
@@ -61,15 +63,17 @@ const App = () => {
       setTitle('');
       setAuthor('');
       setUrl('');
+      setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`);
+      setTimeout(() => setNotification(null), 5000);
     } catch(e) {
-      setErrorMessage(e.message);
-      setTimeout(() => setErrorMessage(null), 5000);
+      setNotification(e.message);
+      setTimeout(() => setNotification(null), 5000);
     }
   };
 
   return (
     <div>
-      {errorMessage && <p>{errorMessage}</p>}
+      {notification && <b>{notification}</b>}
 
       {user === null
         ? (
