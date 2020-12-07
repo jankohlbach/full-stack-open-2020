@@ -104,7 +104,7 @@ const App = () => {
           <>
             <h2>blogs</h2>
 
-            <p>{user.name} logged in</p>
+            <p style={{display: 'inline-block'}}>{user.name} logged in</p>
             <button onClick={handleLogout}>logout</button>
 
             <Togglable buttonLabel="new note" ref={createBlogFormRef}>
