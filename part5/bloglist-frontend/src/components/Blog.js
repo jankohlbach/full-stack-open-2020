@@ -9,16 +9,26 @@ const blogStyle = {
   marginBottom: 5
 };
 
-const Blog = ({blog}) => {
+const Blog = ({blog, user}) => {
   const [detailsVisible, setDetailsVisible] = useState(false);
 
   const addLike = async () => {
     try {
-      const updatedBlog = await blogService.addLike(blog);
+      await blogService.addLike(blog);
     } catch(e) {
       console.error(e);
     }
-  }
+  };
+
+  const removeBlog = async () => {
+    if(window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      try {
+        await blogService.remove(blog);
+      } catch(e) {
+        console.error(e);
+      }
+    }
+  };
 
   return (
     <div style={blogStyle}>
@@ -31,6 +41,7 @@ const Blog = ({blog}) => {
           <div style={{display: 'inline-block'}}>{blog.likes}</div>
           <button onClick={addLike}>like</button>
           <div>{blog.user.name}</div>
+          {blog.user.username === user.username && <button onClick={removeBlog}>remove</button>}
         </>
       )}
     </div>
