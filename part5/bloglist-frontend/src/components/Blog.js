@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import blogService from '../services/blogs';
 
 const blogStyle = {
   paddingTop: 10,
@@ -11,6 +12,14 @@ const blogStyle = {
 const Blog = ({blog}) => {
   const [detailsVisible, setDetailsVisible] = useState(false);
 
+  const addLike = async () => {
+    try {
+      const updatedBlog = await blogService.addLike(blog);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
   return (
     <div style={blogStyle}>
       <div style={{display: 'inline-block'}}>{blog.title} {blog.author}</div>
@@ -20,7 +29,7 @@ const Blog = ({blog}) => {
         <>
           <div>{blog.url}</div>
           <div style={{display: 'inline-block'}}>{blog.likes}</div>
-          <button>like</button>
+          <button onClick={addLike}>like</button>
           <div>{blog.user.name}</div>
         </>
       )}

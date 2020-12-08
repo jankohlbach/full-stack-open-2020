@@ -13,7 +13,6 @@ const getAll = () => {
 };
 
 const create = async (newObject) => {
-  console.log(token);
   const config = {
     headers: {Authorization: token},
   };
@@ -22,4 +21,13 @@ const create = async (newObject) => {
   return response.data;
 };
 
-export default {getAll, create, setToken};
+const addLike = async (blog) => {
+  const config = {
+    headers: {Authorization: token},
+  };
+
+  const response = await axios.put(`${baseUrl}/${blog.id}`, {...blog, likes: blog.likes + 1, config});
+  return response.data;
+};
+
+export default {setToken, getAll, create, addLike};
