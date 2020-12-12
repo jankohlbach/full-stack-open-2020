@@ -51,5 +51,20 @@ describe('Blog app', function() {
 
       cy.contains('a new blog This is the title by famous author added').click();
     });
+
+    it('A user can like a blog', function() {
+      cy.contains('new note').click();
+      cy.get('input[name="title"]').type('This is the title');
+      cy.get('input[name="author"]').type('famous author');
+      cy.get('input[name="url"]').type('test.com');
+      cy.get('form button[type="submit"]').click();
+      cy.visit('http://localhost:3000');
+
+      cy.contains('view').click();
+      cy.contains('like').click();
+      cy.visit('http://localhost:3000');
+      cy.contains('view').click();
+      cy.get('.likes').contains('1');
+    });
   });
 });
