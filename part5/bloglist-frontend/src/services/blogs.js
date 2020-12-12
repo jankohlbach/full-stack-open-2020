@@ -8,8 +8,8 @@ const setToken = (newToken) => {
 };
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+  const request = axios.get(baseUrl);
+  return request.then(response => response.data);
 };
 
 const create = async (newObject) => {
@@ -27,6 +27,7 @@ const remove = async (blog) => {
   };
 
   const response = await axios.delete(`${baseUrl}/${blog.id}`, config);
+  return response.data;
 };
 
 const addLike = async (blog) => {

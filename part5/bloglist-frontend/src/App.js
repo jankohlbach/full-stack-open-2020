@@ -6,7 +6,7 @@ import loginService from './services/login';
 import blogService from './services/blogs';
 
 const App = () => {
-  const [notification, setNotification] = useState(null)
+  const [notification, setNotification] = useState(null);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +52,7 @@ const App = () => {
   useEffect(() => {
     blogService
       .getAll()
-      .then(blogs => setBlogs(blogs))
+      .then(blogs => setBlogs(blogs));
   }, []);
 
   const createNewBlog = async ({title, author, url}) => {
