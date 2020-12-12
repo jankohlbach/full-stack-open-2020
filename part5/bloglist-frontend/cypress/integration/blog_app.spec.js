@@ -66,5 +66,19 @@ describe('Blog app', function() {
       cy.contains('view').click();
       cy.get('.likes').contains('1');
     });
+
+    it('A blog can be deleted', function() {
+      cy.contains('new note').click();
+      cy.get('input[name="title"]').type('This is the title');
+      cy.get('input[name="author"]').type('famous author');
+      cy.get('input[name="url"]').type('test.com');
+      cy.get('form button[type="submit"]').click();
+      cy.visit('http://localhost:3000');
+
+      cy.contains('view').click();
+      cy.contains('remove').click();
+      cy.visit('http://localhost:3000');
+      cy.get('#root').should('not.contain', 'This is the title famous author');
+    });
   });
 });
