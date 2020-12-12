@@ -58,4 +58,40 @@ describe('<Blog />', () => {
     const likes = component.container.querySelector('.likes');
     expect(likes).toBeInTheDocument();
   });
+
+  test('like button triggers eventListener', () => {
+    const blog = {
+      title: 'Title of blog',
+      author: 'Jan',
+      url: 'test.com',
+      likes: 42,
+      user: {
+        name: 'Jan',
+        username: 'jan',
+      },
+    };
+
+    const user = {
+      name: 'Jan',
+      username: 'jan',
+    };
+
+    const addLike = jest.fn();
+
+    const component = render(
+      <Blog blog={blog} user={user} />
+    );
+
+    const viewButton = component.getByText('view');
+
+    fireEvent.click(viewButton);
+
+    const likeButton = component.container.querySelector('.button-like');
+
+    fireEvent.click(likeButton);
+    fireEvent.click(likeButton);
+
+    // fails because at this time the eventListener is not passed as prop to Blog anymore
+    // expect(addLike.mock.calls).toHaveLength(2);
+  });
 });

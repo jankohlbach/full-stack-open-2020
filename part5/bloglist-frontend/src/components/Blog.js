@@ -41,7 +41,7 @@ const Blog = ({blog, user}) => {
         <>
           <div className="url">{blog.url}</div>
           <div className="likes" style={{display: 'inline-block'}}>{blog.likes}</div>
-          <button onClick={addLike}>like</button>
+          <button className="button-like" onClick={addLike}>like</button>
           <div>{blog.user.name}</div>
           {blog.user.username === user.username && <button onClick={removeBlog}>remove</button>}
         </>
