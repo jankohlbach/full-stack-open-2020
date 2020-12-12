@@ -6,7 +6,6 @@ const CreateBlogForm = ({createNewBlog}) => {
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
