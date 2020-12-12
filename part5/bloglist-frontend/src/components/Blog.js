@@ -33,9 +33,9 @@ const Blog = ({blog, user}) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       <div style={{display: 'inline-block'}}>{blog.title} {blog.author}</div>
-      <button onClick={() => setDetailsVisible(!detailsVisible)}>{detailsVisible ? 'hide' : 'view'}</button>
+      <button className="toggle-visibility" onClick={() => setDetailsVisible(!detailsVisible)}>{detailsVisible ? 'hide' : 'view'}</button>
 
       {detailsVisible && (
         <>

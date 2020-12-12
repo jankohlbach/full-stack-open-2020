@@ -35,7 +35,7 @@ describe('Blog app', function() {
     });
   });
 
-  describe.only('When logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function() {
       cy.get('input[name="Username"]').type('jan');
       cy.get('input[name="Password"]').type('admin');
@@ -79,6 +79,96 @@ describe('Blog app', function() {
       cy.contains('remove').click();
       cy.visit('http://localhost:3000');
       cy.get('#root').should('not.contain', 'This is the title famous author');
+    });
+  });
+
+  describe.only('Blogs are ordered', function() {
+    beforeEach(function() {
+      const user = {
+        username: 'jan',
+        password: 'admin',
+      };
+
+      const blog1 = {
+        title: 'test 1',
+        author: 'jan',
+        url: 'admin',
+        likes: 5,
+      };
+
+      const blog2 = {
+        title: 'test 2',
+        author: 'jan',
+        url: 'admin',
+        likes: 1,
+      };
+
+      const blog3 = {
+        title: 'test 3',
+        author: 'jan',
+        url: 'admin',
+        likes: 42,
+      };
+
+      cy.request('POST', 'http://localhost:3003/api/login/', user)
+        .then(({body}) => {
+          localStorage.setItem('loggedBlogappUser', JSON.stringify(body));
+          cy.visit('http://localhost:3000');
+        })
+        .then(() => {
+          cy.request({
+            url: 'http://localhost:3003/api/blogs',
+            method: 'POST',
+            body: blog1,
+            headers: {
+              'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
+            }
+          });
+
+          cy.request({
+            url: 'http://localhost:3003/api/blogs',
+            method: 'POST',
+            body: blog2,
+            headers: {
+              'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
+            }
+          });
+
+          cy.request({
+            url: 'http://localhost:3003/api/blogs',
+            method: 'POST',
+            body: blog3,
+            headers: {
+              'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
+            }
+          });
+        })
+        .then(() => cy.visit('http://localhost:3000'));
+    });
+
+    it('Blogs are ordered according to likes', function() {
+      cy.get('input[name="Username"]').type('jan');
+      cy.get('input[name="Password"]').type('admin');
+      cy.get('button[type="submit"]').click();
+
+      cy.get('button.toggle-visibility')
+        .then(buttons => {
+          for(let i = 0; i < buttons.length; i += 1) {
+            cy.wrap(buttons[i].click());
+          }
+        });
+
+      cy.get('.likes')
+        .then(likes => {
+          let oldValue = likes[0].textContent;
+
+          for(let i = 1; i < likes.length; i += 1) {
+            if(Number(oldValue) < Number(likes[i].textContent))
+              throw new Error();
+
+            oldValue = likes[i].textContent;
+          }
+        });
     });
   });
 });
